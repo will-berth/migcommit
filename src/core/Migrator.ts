@@ -49,7 +49,7 @@ export class Migrator {
         const dbAdapter = this.getAdapter(dialect, environments[this.environment]);
 
         const manager = new MigrationManager(dbAdapter);
-        manager.commit(name, out, environments[this.environment]);
+        manager.commit(name, out, this.environment);
     }
 
     private getAdapter(dialect: string, connection: string): DatabaseAdapter {

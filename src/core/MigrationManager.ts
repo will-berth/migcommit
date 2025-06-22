@@ -33,16 +33,35 @@ export class MigrationManager {
      */
     commit(name: string, out: string, envTag: string) {
         try {
+            const metadataDirPath = out + '/_metadata';
+            const metadataFilePath = metadataDirPath + '/_.json'
+
             if (!this.fsHandler.exist(out)) {
-                const metadataPath = out + '/_metadata';
                 this.fsHandler.buildDir(out)
-                this.fsHandler.buildDir(metadataPath)
-                this.fsHandler.createJson(metadataPath + '/_.json', {})
+                this.fsHandler.buildDir(metadataDirPath)
+                this.fsHandler.createJson(metadataFilePath, {})
             }
 
+            const history = this.fsHandler.readJson(metadataFilePath)
+            const historyByEnv: any[] = history[envTag] || []
+            
             const timestamp = Date.now();
-            const path = out + '/' + generateChecksum(name + timestamp.toString()) + ' - ' + name + '.sql'
+            const checksum = generateChecksum(name + timestamp.toString())
+            const sqlFileName = checksum + ' - ' + name + '.sql';
+            const path = out + '/' + sqlFileName
+            
+            historyByEnv.forEach(log => log.head = false);
+            
+            historyByEnv.push({
+                name: sqlFileName,
+                head: true,
+                checksum,
+            })
+            history[envTag] = historyByEnv
+
+            
             this.fsHandler.writeNewMigration(path, '-- add your migration here!!!')
+            this.fsHandler.createJson(metadataFilePath, history)
 
         } catch (err) {
             console.log(err)
