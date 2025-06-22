@@ -1,5 +1,7 @@
 import { Command } from "commander";
-import fs from "fs";
+import { ConfigLoader } from "../../config/ConfigLoader";
+import { Migrator } from "../../core/Migrator";
+import { FileSystemHandler } from "../../core/FileSystemHandler";
 
 export function initCommand(program: Command) {
     program
@@ -7,21 +9,9 @@ export function initCommand(program: Command) {
         .description('Init create to initial config project')
         .action((str, options) => {
             try{
-                const existGitIgnore = fs.existsSync('.gitignore');
-
-                if(existGitIgnore){
-                    fs.appendFileSync('.gitignore', '\nmigcommit.config.json')
-                }else{
-                    fs.writeFileSync('.gitignore', '\nmigcommit.config.json')
-                }
-                const initConfig = {
-                    database: "[db]",
-                    dialect: "[dialect]",
-                    out: "./migrations",
-                    enviroments: {}
-                }
-                fs.writeFileSync("migcommit.config.json", JSON.stringify(initConfig, null, 2))
-                console.log('Migcommit config initialized');
+                const configLoader = new ConfigLoader( new FileSystemHandler())
+                const migrator = new Migrator(configLoader)
+                migrator.init()
             } catch (err){
                 console.log(err)
             }
