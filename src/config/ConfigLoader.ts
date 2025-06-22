@@ -5,7 +5,7 @@ type Dialects = 'postgres' | 'mysql'
 interface Config{
     dialect: Dialects
     out: string
-    enviroments: {
+    environments: {
         [key: string]: string;
     }
 }
@@ -66,14 +66,14 @@ export class ConfigLoader {
             throw new Error('Config must be a valid JSON object');
         }
 
-        const { dialect, out, enviroments } = config;
+        const { dialect, out, environments } = config;
 
         if(!dialectsAvailables.includes(dialect)) throw new Error('dialect config is required with only: postgres, mysql')
     
         if (!out || typeof out !== 'string') throw new Error('Invalid or missing "out" path');
 
-        if (!enviroments || typeof enviroments !== 'object') throw new Error('Invalid or missing "enviroments"');
+        if (!environments || typeof environments !== 'object') throw new Error('Invalid or missing "environments"');
         
-        if (!enviroments[this.env] || enviroments[this.env] === '') throw new Error('At the moment the environment is using dev but this isnt configured');
+        if (!environments[this.env] || environments[this.env] === '') throw new Error('At the moment the environment is using dev but this isnt configured');
     }
 }

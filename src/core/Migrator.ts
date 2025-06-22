@@ -44,12 +44,12 @@ export class Migrator {
     commit(name: string) {
         const config = this.configLoader?.getConfig();
 
-        const { dialect, out, enviroments } = config;
+        const { dialect, out, environments } = config;
 
-        const dbAdapter = this.getAdapter(dialect, enviroments[this.environment]);
+        const dbAdapter = this.getAdapter(dialect, environments[this.environment]);
 
         const manager = new MigrationManager(dbAdapter);
-        manager.commit(name, out, enviroments[this.environment]);
+        manager.commit(name, out, environments[this.environment]);
     }
 
     private getAdapter(dialect: string, connection: string): DatabaseAdapter {
