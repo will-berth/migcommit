@@ -1,6 +1,6 @@
 {
   "name": "migcommit",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Database migration tool that works like Git. Commit, push, pull, and track your database schema using plain SQL. Supports multiple environments and database engines.",
   "license": "ISC",
   "author": "will-berth",
