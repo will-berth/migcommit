@@ -1,0 +1,111 @@
+{
+  "dev": [
+    {
+      "name": "1751863346 - create users table.sql",
+      "head": false,
+      "checksum": "20031a77b23b9ef9dbf54d2f74798037630f63a4",
+      "introspect": []
+    },
+    {
+      "name": "1752294353 - create test table.sql",
+      "head": true,
+      "checksum": "be19b816109dfdb5e4756c108531be2e866dc825",
+      "introspect": [
+        {
+          "type": "create",
+          "keyword": "table",
+          "temporary": null,
+          "unlogged": null,
+          "if_not_exists": "IF NOT EXISTS",
+          "table": [
+            {
+              "db": null,
+              "table": "dato",
+              "as": null
+            }
+          ],
+          "ignore_replace": null,
+          "as": null,
+          "query_expr": null,
+          "create_definitions": [
+            {
+              "column": {
+                "type": "column_ref",
+                "table": null,
+                "column": {
+                  "expr": {
+                    "type": "default",
+                    "value": "id"
+                  }
+                },
+                "collate": null
+              },
+              "definition": {
+                "dataType": "SERIAL",
+                "suffix": []
+              },
+              "resource": "column",
+              "primary_key": "primary key"
+            },
+            {
+              "column": {
+                "type": "column_ref",
+                "table": null,
+                "column": {
+                  "expr": {
+                    "type": "default",
+                    "value": "nombre"
+                  }
+                },
+                "collate": null
+              },
+              "definition": {
+                "dataType": "TEXT"
+              },
+              "resource": "column",
+              "default_val": null,
+              "nullable": {
+                "type": "not null",
+                "value": "not null"
+              }
+            },
+            {
+              "column": {
+                "type": "column_ref",
+                "table": null,
+                "column": {
+                  "expr": {
+                    "type": "default",
+                    "value": "creado_en"
+                  }
+                },
+                "collate": null
+              },
+              "definition": {
+                "dataType": "TIMESTAMP"
+              },
+              "resource": "column",
+              "default_val": {
+                "type": "default",
+                "value": {
+                  "type": "function",
+                  "name": {
+                    "name": [
+                      {
+                        "type": "origin",
+                        "value": "CURRENT_TIMESTAMP"
+                      }
+                    ]
+                  },
+                  "over": null
+                }
+              },
+              "nullable": null
+            }
+          ],
+          "table_options": null
+        }
+      ]
+    }
+  ]
+}

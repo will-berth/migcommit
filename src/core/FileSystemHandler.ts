@@ -86,4 +86,32 @@ export class FileSystemHandler {
     buildDir(path: string){
         fs.mkdirSync(path);
     }
+
+    /**
+     * Reads the contents of a directory and returns a list of `.sql` files.
+     * 
+     * @param path The directory path to read.
+     * @returns An array of file names ending with `.sql` in the specified directory.
+     * @throws If the directory does not exist.
+     */
+    readDir(path: string): string[] {
+        if (!this.exist(path)) {
+            throw new Error(`Directory does not exist: ${path}`);
+        }
+        return fs.readdirSync(path).filter(file => file.endsWith('.sql'));
+    }
+
+    /**
+     * Reads the contents of a file as a UTF-8 string.
+     * 
+     * @param path The file path to read.
+     * @returns The file contents as a string.
+     * @throws If the file does not exist.
+     */
+    readFile(path: string): string {
+        if (!this.exist(path)) {
+            throw new Error(`File does not exist: ${path}`);
+        }
+        return fs.readFileSync(path, 'utf-8');
+    }
 }

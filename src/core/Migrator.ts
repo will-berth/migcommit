@@ -4,6 +4,7 @@ import { PostgreSQLAdapter } from "../databases/PostgreSQLAdapter";
 import { FileSystemHandler } from "./FileSystemHandler";
 import { InitManager } from "./InitManager";
 import { MigrationManager } from "./MigrationManager";
+import { NSParser } from "./parser/NSParser";
 
 
 /**
@@ -47,11 +48,37 @@ export class Migrator {
         const { dialect, out, environments } = config;
 
         const dbAdapter = this.getAdapter(dialect, environments[this.environment]);
-
-        const manager = new MigrationManager(dbAdapter);
+        const parser = this.getParser(dialect);
+        const manager = new MigrationManager(dbAdapter, parser);
         manager.commit(name, out, this.environment);
     }
+    
+    /**
+     * Applies all pending migrations to the database for the current environment.
+     * 
+     * This method loads the configuration, retrieves the appropriate database adapter,
+     * and delegates the push operation to the MigrationManager.
+     */
+    push() {
+        const config = this.configLoader?.getConfig();
+        
+        const { dialect, out, environments } = config;
+        
+        const dbAdapter = this.getAdapter(dialect, environments[this.environment]);
+        const parser = this.getParser(dialect);
+        const manager = new MigrationManager(dbAdapter, parser);
 
+        manager.push(out, this.environment);
+    }
+
+    /**
+     * Returns a database adapter instance for the specified dialect and connection string.
+     * 
+     * @param dialect The database dialect (e.g., 'postgres').
+     * @param connection The connection string for the database.
+     * @returns An instance of DatabaseAdapter.
+     * @throws If the dialect is unsupported.
+     */
     private getAdapter(dialect: string, connection: string): DatabaseAdapter {
         switch (dialect) {
             case 'postgres':
@@ -59,5 +86,22 @@ export class Migrator {
             default:
                 throw new Error(`Unsupported dialect: ${dialect}`);
         }
+    }
+    
+    /**
+     * Returns a parser adapter instance for the specified dialect.
+     * 
+     * @param dialect The database dialect (e.g., 'postgres').
+     * @returns An instance of ParserAdapter.
+     * @throws If the dialect is unsupported.
+     */
+    private getParser(dialect: string){
+        switch (dialect) {
+            case 'postgres':
+                return new NSParser('PostgresQL');
+            default:
+                throw new Error(`Unsupported dialect: ${dialect}`);
+        }
+
     }
 }
