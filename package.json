@@ -2,7 +2,7 @@
   "name": "migcommit",
   "version": "0.1.0",
   "description": "Database migration tool that works like Git. Commit, push, pull, and track your database schema using plain SQL. Supports multiple environments and database engines.",
-  "license": "ISC",
+  "license": "MIT",
   "author": "will-berth",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -27,5 +27,14 @@
   },
   "bin": {
     "migcommit": "./dist/bin/cli.js"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/will-berth/migcommit.git"
+  },
+  "bugs": {
+    "url": "https://github.com/will-berth/migcommit/issues"
+  },
+  "homepage": "https://github.com/will-berth/migcommit#readme"
+
 }
